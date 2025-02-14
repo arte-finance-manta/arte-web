@@ -4,8 +4,7 @@ export const ADDRESS_CURATOR = "0x9E82193de9bFbdD813Ba8fe572F56104B4F5bD7c"
 export const ADDRESS_MOCK_USDC = "0xFfD65B978584bD3B89D315FdfEC874aA9BBc1A1a"
 export const ADDRESS_MOCK_USDT = "0x14550EC0A4e09f1204934829d07B14008706dD94"
 
-export const API_SUBGRAPH = "https://api.goldsky.com/api/public/project_cm2ybarz9bslu01zjgwj1hnty/subgraphs/arte-finance/1.0.0/gn"
-export const API_SUBGRAPH_CURATOR = "https://api.goldsky.com/api/public/project_cm2ybarz9bslu01zjgwj1hnty/subgraphs/arte-curator/1.0.0/gn"
+export const API_SUBGRAPH = "https://api.goldsky.com/api/public/project_cm2ybarz9bslu01zjgwj1hnty/subgraphs/arte-subgraph/1.0.0/gn"
 
 export const API_CRYPTOTOKEN = "https://gist.githubusercontent.com/FjrREPO/767cc50342ef8d9737755ae24ff73b47/raw/c911eb274b4e0075e2b15c10126a8ab545d624b8/arte-manta-token.json"
 

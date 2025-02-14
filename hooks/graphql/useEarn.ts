@@ -1,4 +1,4 @@
-import { API_SUBGRAPH, API_SUBGRAPH_CURATOR } from "@/constants/config";
+import { API_SUBGRAPH } from "@/constants/config";
 import { queryCurator } from "@/graphql/query";
 import { EarnSchema } from "@/lib/validation/types";
 import { useQuery } from "@tanstack/react-query";
@@ -12,7 +12,7 @@ export default function useEarn() {
     const { data, isLoading: earnLoading, isRefetching: earnRefetching } = useQuery<QueryData>({
         queryKey: ["earn"],
         queryFn: async () => {
-            return await request(API_SUBGRAPH_CURATOR, queryCurator);
+            return await request(API_SUBGRAPH, queryCurator);
         },
         refetchInterval: 600000000,
     });
