@@ -1,0 +1,105 @@
+import { ADDRESS_ARTE } from "@/constants/config";
+import { mockArteABI } from "@/lib/abi/mockArteABI";
+import { denormalize } from "@/lib/helper/bignumber";
+import { config } from "@/lib/wagmi";
+import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import { useAccount } from "wagmi";
+import {
+    waitForTransactionReceipt,
+    writeContract,
+} from "wagmi/actions";
+
+export const useBid = () => {
+    const { address: userAddress } = useAccount();
+
+    const [steps, setSteps] = useState<
+        Array<{
+            step: number;
+            status: Status;
+            error?: string;
+        }>
+    >([
+        {
+            step: 1,
+            status: "idle",
+        },
+    ]);
+
+    const [txHash, setTxHash] = useState<HexAddress | null>(null);
+
+    const mutation = useMutation({
+        mutationFn: async ({
+            poolId,
+            tokenId,
+            amount,
+        }: {
+            poolId: string;
+            tokenId: string;
+            amount: string;
+        }) => {
+            try {
+                // Reset steps
+                setSteps([{ step: 1, status: "idle" }]);
+
+                if (!amount || !userAddress) {
+                    throw new Error("Invalid parameters");
+                }
+
+                const denormalizeUserAmount = denormalize(amount || "0", 6);
+
+                setSteps((prev) =>
+                    prev.map((item) => {
+                        if (item.step === 1) {
+                            return { ...item, status: "loading" };
+                        }
+                        return item;
+                    })
+                );
+
+                const txHash = await writeContract(config, {
+                    address: ADDRESS_ARTE,
+                    abi: mockArteABI,
+                    functionName: "bid",
+                    args: [
+                        poolId,
+                        BigInt(tokenId),
+                        denormalizeUserAmount,
+                    ],
+                });
+
+                setTxHash(txHash);
+
+                const result = await waitForTransactionReceipt(config, {
+                    hash: txHash,
+                });
+
+                setSteps((prev) =>
+                    prev.map((item) => {
+                        if (item.step === 1) {
+                            return { ...item, status: "success" };
+                        }
+                        return item;
+                    })
+                );
+
+                return result;
+            } catch (e) {
+                console.error("Bid Error", e);
+
+                setSteps((prev) =>
+                    prev.map((step) => {
+                        if (step.status === "loading") {
+                            return { ...step, status: "error", error: (e as Error).message };
+                        }
+                        return step;
+                    })
+                );
+
+                throw e;
+            }
+        },
+    });
+
+    return { steps, mutation, txHash };
+};
