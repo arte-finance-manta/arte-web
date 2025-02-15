@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react"
 import { formatAddress } from "@/lib/utils";
 import { BadgeCheck, ExternalLink } from "lucide-react";
@@ -11,6 +13,8 @@ import { Separator } from "@/components/ui/separator";
 import SkeletonWrapper from "@/components/loader/SkeletonWrapper";
 import { EarnSchema } from "@/lib/validation/types";
 import { motion } from "framer-motion";
+import { useERC20Balance } from "@/hooks/contract/useERC20Balance";
+import { useAccount } from "wagmi";
 
 interface Props {
   filteredData?: EarnSchema;
@@ -18,6 +22,10 @@ interface Props {
 }
 
 export default function TopEarnData({ filteredData, isLoading }: Props) {
+  const { address } = useAccount();
+
+  const { bNormalized } = useERC20Balance(address as HexAddress, filteredData?.asset as HexAddress)
+
   return (
     <div className="flex flex-col lg:flex-row w-full gap-5">
       <div className="flex flex-col w-full gap-5 lg:w-3/6 flex-1 shrink-0 self-stretch">
@@ -94,7 +102,7 @@ export default function TopEarnData({ filteredData, isLoading }: Props) {
               <Separator className="w-full" />
               <div className="flex flex-row justify-between">
                 <Label>Deposit :</Label>
-                <Label>0</Label>
+                <Label>{bNormalized && Number(bNormalized).toFixed(2)}</Label>
               </div>
             </CardContent>
           </Card>

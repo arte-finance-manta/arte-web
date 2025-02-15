@@ -19,10 +19,12 @@ export const useERC20Balance = (
     });
 
     const balance = data && (data as bigint).toString()
+    const bNormalized = normalize(Number(data), 18)
 
     return {
         balance,
         balanceLoading,
-        balanceError
+        balanceError,
+        bNormalized
     };
 };

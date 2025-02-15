@@ -1,3 +1,5 @@
+"use client";
+
 import { CoinImage } from "@/components/coin/CoinImage"
 import SuccessDialog from "@/components/dialog/SuccessDialog"
 import { LoadingTransaction } from "@/components/loader/LoadingTransaction"
