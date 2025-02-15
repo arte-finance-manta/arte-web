@@ -1,12 +1,12 @@
 import { listIP } from "@/constants/config";
 import { mockIPABI } from "@/lib/abi/mockIPABI";
 import { NextResponse } from "next/server";
-import { createPublicClient, http, formatUnits } from 'viem';
-import { mainnet } from 'viem/chains';
+import { createPublicClient, http } from 'viem';
+import { mantaSepoliaTestnet } from 'viem/chains';
 
 // Create a public client for ethereum mainnet
 const publicClient = createPublicClient({
-  chain: mainnet,
+  chain: mantaSepoliaTestnet,
   transport: http('https://pacific-rpc.sepolia-testnet.manta.network/http') // Replace with your RPC URL
 });
 
@@ -20,7 +20,7 @@ export const GET = async () => {
     });
 
     const listIds = result.map((item: any) => Number(item));
-    
+
     if (listIds.length === 0) {
       return NextResponse.json({ ownedNfts: [] });
     }
@@ -101,7 +101,7 @@ export const GET = async () => {
 
     const nftDataResults = await Promise.all(nftDataPromises);
     const validNftData = nftDataResults.filter((data): data is NonNullable<typeof data> => data !== null);
-    
+
     return NextResponse.json({
       ownedNfts: validNftData
     });
