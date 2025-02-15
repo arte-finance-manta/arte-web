@@ -110,7 +110,7 @@ export default function AuctionDetailComponent({
     const handleBidChange = (value: string) => {
         const numericValue = parseFloat(value);
         const minBid = parseInt(normalize(auctionDetails?.debt || "0", 6));
-        const maxBalance = balance ? (Number(normalize(balance || 0, 18))) : 0;
+        const maxBalance = balance ? (Number(normalize(balance || 0, 6))) : 0;
 
         if (isNaN(numericValue)) {
             setBidError("Please enter a valid number");
@@ -130,7 +130,7 @@ export default function AuctionDetailComponent({
     }
 
     const handleMaxBid = () => {
-        const maxBalance = balance ? (Number(normalize(balance || 0, 18))) : 0;
+        const maxBalance = balance ? (Number(normalize(balance || 0, 6))) : 0;
         setBidAmount(maxBalance.toString());
         setBidError(null);
     }
@@ -140,7 +140,7 @@ export default function AuctionDetailComponent({
 
         const numericBid = parseFloat(bidAmount);
         const minBid = parseInt(normalize(auctionDetails?.debt || "0", 6))
-        const maxBalance = balance ? (Number(normalize(balance || 0, 18))) : 0;
+        const maxBalance = balance ? (Number(normalize(balance || 0, 6))) : 0;
 
         if (isAuctionEnded) {
             setBidError("Auction has ended");
@@ -310,7 +310,7 @@ export default function AuctionDetailComponent({
                                     <SkeletonWrapper isLoading={auctionLoading || bidsLoading || balanceLoading}>
                                         <BidInput
                                             minBid={findHighestBid?.amount ? Number(findHighestBid.amount) + 1 : parseInt(normalize(auctionDetails?.debt || "0", 6))}
-                                            balance={balance ? (Number(normalize(balance || 0, 18))) : 0}
+                                            balance={balance ? (Number(normalize(balance || 0, 6))) : 0}
                                             onBidChange={handleBidChange}
                                             onMaxBid={handleMaxBid}
                                             setBidAmount={setBidAmount}

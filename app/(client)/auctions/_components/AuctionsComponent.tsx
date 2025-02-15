@@ -8,7 +8,7 @@ import { NFTCardSkeleton } from "./NFTCardSkeleton";
 import { AuctionSidebar } from "./AuctionSidebar";
 import { NFTCard } from "./NFTCard";
 
-export const COLLECTIONS = ["All Collections", "IP1", "IP2", "IP3"];
+export const COLLECTIONS = ["All Collections", "IP1"];
 export const SORT_OPTIONS = [
     { label: "Potential Profit (Highest)", value: "profit_desc" },
     { label: "Potential Profit (Lowest)", value: "profit_asc" },

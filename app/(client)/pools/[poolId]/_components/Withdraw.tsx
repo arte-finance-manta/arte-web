@@ -37,7 +37,7 @@ export default function Withdraw({
         : "" as HexAddress;
 
     const { balance } = useERC20Balance(address as HexAddress, loanTokenAddress);
-    const normalizeBalance = normalize(balance?.toString() ?? "0", 18);
+    const normalizeBalance = normalize(balance?.toString() ?? "0", 6);
 
     const {
         mutation,
@@ -193,7 +193,7 @@ export default function Withdraw({
                                 </div>
                                 <div className="flex flex-row justify-between">
                                     <Label className="text-textSecondary">Gas Fee</Label>
-                                    <Label>1</Label>
+                                    <Label>-</Label>
                                 </div>
                             </div>
                         </CardContent>

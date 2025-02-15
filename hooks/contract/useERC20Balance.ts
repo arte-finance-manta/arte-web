@@ -16,6 +16,9 @@ export const useERC20Balance = (
         args: [
             address as HexAddress
         ],
+        query: {
+            refetchInterval: 3000
+        }
     });
 
     const balance = data && (data as bigint).toString()

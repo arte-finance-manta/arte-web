@@ -1,9 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import { CoinImage } from "@/components/coin/CoinImage";
 import SuccessDialog from "@/components/dialog/SuccessDialog";
 import { LoadingTransaction } from "@/components/loader/LoadingTransaction";
-import { NftImage } from "@/components/nft/NftImage";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -18,7 +18,6 @@ import { Label } from "@/components/ui/label";
 import { useDecimal } from "@/hooks/contract/useDecimal";
 import { useGetPosition } from "@/hooks/contract/useGetPosition";
 import { useRepay } from "@/hooks/contract/write/useRepay";
-import useCurrentAccount from "@/hooks/graphql/useCurrentAccount";
 import usePools from "@/hooks/graphql/usePools";
 import { denormalizeBN, normalizeBN } from "@/lib/helper/bignumber";
 import { AlchemyNftSchema, PoolSchema } from "@/lib/validation/types";
@@ -44,22 +43,45 @@ export default function Repay({ filteredData, nftData }: RepayProps) {
   );
   const { refetch: refetchPools } = usePools();
 
-  const position = positionData as [bigint, bigint];
-  const currentShares = position?.[0] as bigint;
+  const [borrowedAmount, setBorrowedAmount] = useState("0");
   const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+  
   const { decimal } = useDecimal(
     (filteredData?.loanToken.loanToken as HexAddress) || ""
   );
 
-  const calculationBorrow =
-    ((Number(currentShares) || 0) /
-      (Number(filteredData?.totalBorrowShares) || 0)) *
-    (Number(filteredData?.totalBorrowAssets) || 0);
+  const calculateBorrowedAmount = () => {
+    const position = positionData as [bigint, bigint];
+    const currentShares = position?.[0] as bigint;
+    
+    const calculationBorrow =
+      ((Number(currentShares) || 0) /
+        (Number(filteredData?.totalBorrowShares) || 0)) *
+      (Number(filteredData?.totalBorrowAssets) || 0);
 
-  const borrowedAmount = normalizeBN(
-    isNaN(calculationBorrow) ? "0" : calculationBorrow,
-    decimal || 6
-  );
+    const normalizedAmount = normalizeBN(
+      isNaN(calculationBorrow) ? "0" : calculationBorrow,
+      decimal || 6
+    );
+
+    setBorrowedAmount(normalizedAmount.toString());
+  };
+
+  useEffect(() => {
+    // Initial calculation
+    calculateBorrowedAmount();
+
+    // Set up the interval
+    const intervalId = setInterval(() => {
+      refetch().then(() => {
+        refetchPools();
+        calculateBorrowedAmount();
+      });
+    }, 3000);
+
+    // Clean up the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [positionData, filteredData, decimal, refetch]);
 
   const { mutation, txHash } = useRepay();
 
@@ -166,7 +188,7 @@ export default function Repay({ filteredData, nftData }: RepayProps) {
               />
 
               <p className="text-textSecondary text-sm">
-                You borrowed : {parseFloat(borrowedAmount.toString()).toFixed(2)}
+                You borrowed : {parseFloat(borrowedAmount).toFixed(2)}
               </p>
 
               <Button
@@ -195,7 +217,7 @@ export default function Repay({ filteredData, nftData }: RepayProps) {
                 </div>
                 <div className="flex flex-row justify-between">
                   <Label className="text-textSecondary">Gas Fee</Label>
-                  <Label>1</Label>
+                  <Label>-</Label>
                 </div>
               </div>
             </CardContent>

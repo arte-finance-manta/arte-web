@@ -55,7 +55,7 @@ export default function DashboardPage() {
                             borrowData={borrowData}
                             borrowLoading={borrowLoading}
                             borrowRefetching={borrowRefetching}
-                            nftData={nftData}
+                            nftData={nftData as any}
                             nftLoading={nftLoading}
                             poolData={poolData}
                             poolLoading={poolLoading}

@@ -148,10 +148,10 @@ export const DepositAndBorrowSection = ({
     filteredPools.length,
   ]);
 
-  const uniqueNftData = nftData?.filter(
+  const uniqueNftData = Array.isArray(nftData) ? nftData.filter(
     (token, index, self) =>
       self.findIndex((t) => t.tokenId === token.tokenId) === index
-  );
+  ) : [];
 
   return (
     <div className="flex flex-col gap-4">

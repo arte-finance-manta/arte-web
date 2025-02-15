@@ -139,7 +139,7 @@ export default function Borrow({
                                 </div>
                                 <div className="flex flex-row justify-between">
                                     <Label className="text-textSecondary">Gas Fee</Label>
-                                    <Label>1</Label>
+                                    <Label>-</Label>
                                 </div>
                             </div>
                         </CardContent>
