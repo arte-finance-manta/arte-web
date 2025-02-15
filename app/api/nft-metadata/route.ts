@@ -1,151 +1,116 @@
-import { ADDRESS_ARTE, listIP } from "@/constants/config";
-import { NextRequest, NextResponse } from "next/server";
+import { listIP } from "@/constants/config";
+import { mockIPABI } from "@/lib/abi/mockIPABI";
+import { NextResponse } from "next/server";
+import { createPublicClient, http, formatUnits } from 'viem';
+import { mainnet } from 'viem/chains';
 
-export const GET = async (request: NextRequest) => {
-  const ownerAddress = request.nextUrl.searchParams.get("ownerAddress");
-  const contractAddresses =
-    request.nextUrl.searchParams.getAll("contractAddress");
-  const address = ADDRESS_ARTE
+// Create a public client for ethereum mainnet
+const publicClient = createPublicClient({
+  chain: mainnet,
+  transport: http('https://pacific-rpc.sepolia-testnet.manta.network/http') // Replace with your RPC URL
+});
 
-  if (!ownerAddress) {
-    return NextResponse.json(
-      { error: "ownerAddress is required" },
-      { status: 400 }
-    );
-  }
+export const GET = async () => {
+  try {
+    // Read all token IDs
+    const result: any = await publicClient.readContract({
+      address: listIP[0] as HexAddress,
+      abi: mockIPABI,
+      functionName: 'listAllToken',
+    });
 
-  if (contractAddresses.length === 0) {
-    return NextResponse.json(
-      { error: "At least one contractAddress is required" },
-      { status: 400 }
-    );
-  }
-
-  // ownerAddress == mint -> mintAddress
-  // contractAddresses == listIP
-
-  const response = `
-    {
-      "ownedNfts": [
-        {
-          "contract": {
-            "address": ${listIP[0]},
-            "name": "IP 2",
-            "symbol": "IP2",
-            "totalSupply": null,
-            "tokenType": "ERC721",
-            "contractDeployer": "0x1d7beeDfB25b6bA584B01a4aD2D9e380Ba4f2E2d",
-            "deployedBlockNumber": 18862546,
-            "openSeaMetadata": {
-              "floorPrice": null,
-              "collectionName": null,
-              "collectionSlug": null,
-              "safelistRequestStatus": null,
-              "imageUrl": null,
-              "description": null,
-              "externalUrl": null,
-              "twitterUsername": null,
-              "discordUrl": null,
-              "bannerImageUrl": null,
-              "lastIngestedAt": null
-            },
-            "isSpam": null,
-            "spamClassifications": []
-          },
-          "tokenId": "444",
-          "tokenType": "ERC721",
-          "name": null,
-          "description": null,
-          "tokenUri": null,
-          "image": {
-            "cachedUrl": null,
-            "thumbnailUrl": null,
-            "pngUrl": null,
-            "contentType": null,
-            "size": null,
-            "originalUrl": null
-          },
-          "raw": {
-            "tokenUri": null,
-            "metadata": {},
-            "error": "Malformed token uri, do not retry"
-          },
-          "collection": null,
-          "mint": {
-            "mintAddress": ${ownerAddress},
-            "blockNumber": 18864212,
-            "timestamp": "2024-12-06T14:51:52Z",
-            "transactionHash": "0xd17a7fba7c92cb440739acf268c8a0f1fc63ab3f7e54dcc0c271ce336c4fa91d"
-          },
-          "owners": null,
-          "timeLastUpdated": "2025-02-14T14:24:51.353Z",
-          "balance": "1",
-          "acquiredAt": {
-            "blockTimestamp": null,
-            "blockNumber": null
-          }
-        },
-        {
-          "contract": {
-            "address": "0x9E422dAE52EF8CBec73D4b27594ca9da55833d21",
-            "name": "IP 1",
-            "symbol": "IP1",
-            "totalSupply": null,
-            "tokenType": "ERC721",
-            "contractDeployer": "0x1d7beeDfB25b6bA584B01a4aD2D9e380Ba4f2E2d",
-            "deployedBlockNumber": 19040031,
-            "openSeaMetadata": {
-              "floorPrice": null,
-              "collectionName": null,
-              "collectionSlug": null,
-              "safelistRequestStatus": null,
-              "imageUrl": null,
-              "description": null,
-              "externalUrl": null,
-              "twitterUsername": null,
-              "discordUrl": null,
-              "bannerImageUrl": null,
-              "lastIngestedAt": null
-            },
-            "isSpam": null,
-            "spamClassifications": []
-          },
-          "tokenId": "35",
-          "tokenType": "ERC721",
-          "name": null,
-          "description": null,
-          "tokenUri": null,
-          "image": {
-            "cachedUrl": null,
-            "thumbnailUrl": null,
-            "pngUrl": null,
-            "contentType": null,
-            "size": null,
-            "originalUrl": null
-          },
-          "raw": {
-            "tokenUri": null,
-            "metadata": {},
-            "error": "Malformed token uri, do not retry"
-          },
-          "collection": null,
-          "mint": {
-            "mintAddress": "0x3b4f0135465d444a5bd06ab90fc59b73916c85f5",
-            "blockNumber": 19633870,
-            "timestamp": "2024-12-24T10:27:08Z",
-            "transactionHash": "0x2d69dbb244882e1796fc884f789ae708c6c60ce2ff322d412981de345af04fc8"
-          },
-          "owners": null,
-          "timeLastUpdated": "2025-02-14T14:24:51.345Z",
-          "balance": "1",
-          "acquiredAt": {
-            "blockTimestamp": null,
-            "blockNumber": null
-          }
-        }
-      ]
+    const listIds = result.map((item: any) => Number(item));
+    
+    if (listIds.length === 0) {
+      return NextResponse.json({ ownedNfts: [] });
     }
-  `
 
-  return NextResponse.json(response);
+    // Fetch owner data for each token
+    const nftDataPromises = listIds.map(async (tokenId: any) => {
+      try {
+        const resultOwner = await publicClient.readContract({
+          address: listIP[0] as HexAddress,
+          abi: mockIPABI,
+          functionName: 'ownerOf',
+          args: [BigInt(tokenId)],
+        });
+
+        return {
+          contract: {
+            address: listIP[0],
+            name: "IP 1",
+            symbol: "IP1",
+            totalSupply: null,
+            tokenType: "ERC721",
+            contractDeployer: "0xc876f3c2b40d89F6920A70394D02AacfDc50ed45",
+            deployedBlockNumber: 18862546,
+            openSeaMetadata: {
+              floorPrice: null,
+              collectionName: null,
+              collectionSlug: null,
+              safelistRequestStatus: null,
+              imageUrl: null,
+              description: null,
+              externalUrl: null,
+              twitterUsername: null,
+              discordUrl: null,
+              bannerImageUrl: null,
+              lastIngestedAt: null
+            },
+            isSpam: null,
+            spamClassifications: []
+          },
+          tokenId: tokenId.toString(),
+          tokenType: "ERC721",
+          name: null,
+          description: null,
+          tokenUri: null,
+          image: {
+            cachedUrl: null,
+            thumbnailUrl: null,
+            pngUrl: null,
+            contentType: null,
+            size: null,
+            originalUrl: null
+          },
+          raw: {
+            tokenUri: null,
+            metadata: {},
+            error: "Malformed token uri, do not retry"
+          },
+          collection: null,
+          mint: {
+            mintAddress: resultOwner,
+            blockNumber: 18864212,
+            timestamp: "2024-12-06T14:51:52Z",
+            transactionHash: "null"
+          },
+          owners: null,
+          timeLastUpdated: new Date().toISOString(),
+          balance: "1",
+          acquiredAt: {
+            blockTimestamp: null,
+            blockNumber: null
+          }
+        };
+      } catch (error) {
+        console.error(`Error fetching data for token ${tokenId}:`, error);
+        return null;
+      }
+    });
+
+    const nftDataResults = await Promise.all(nftDataPromises);
+    const validNftData = nftDataResults.filter((data): data is NonNullable<typeof data> => data !== null);
+    
+    return NextResponse.json({
+      ownedNfts: validNftData
+    });
+
+  } catch (error) {
+    console.error("Error fetching NFT data:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch NFT data" },
+      { status: 500 }
+    );
+  }
 };

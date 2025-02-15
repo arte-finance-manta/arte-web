@@ -1,7 +1,10 @@
-import { listIP } from "@/constants/config";
-import { mockIPABI } from "@/lib/abi/mockIPABI";
 import { AlchemyNftSchema } from "@/lib/validation/types";
-import { useAccount, useReadContract } from "wagmi";
+import { useQuery } from "@tanstack/react-query";
+import { useAccount } from "wagmi";
+
+interface QueryData {
+  ownedNfts: AlchemyNftSchema[];
+}
 
 export const useOwnerNft = ({
   contractAdresses,
@@ -10,16 +13,19 @@ export const useOwnerNft = ({
 }) => {
   const { address } = useAccount();
 
-  const { data, isLoading: nftLoading } = useReadContract({
-    abi: mockIPABI,
-    address: listIP[0] as HexAddress,
-    functionName: "getAllTokenMetadataByAddressMinted",
-    args: [address],
-  })
+  const { data: ownedNfts, isLoading: nftLoading } = useQuery<QueryData>({
+    queryKey: ["ownedNfts", address, contractAdresses],
+    queryFn: async () => {
+      const response = await fetch(
+        `/api/nft-metadata`
+      );
+      return response.json();
+    },
+  });
 
-  const parsedData = data ? JSON.parse(data as any) : [];
+  const nft: AlchemyNftSchema[] = ownedNfts?.ownedNfts || [];
 
-  const nftData: AlchemyNftSchema[] = parsedData as AlchemyNftSchema[] || [];
+  const nftData = nft && Array.isArray(nft) && nft?.filter((nft) => nft.mint.mintAddress === address)
 
   return { nftData, nftLoading };
 };
