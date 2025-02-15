@@ -30,7 +30,14 @@ export default function TopPoolData({
   const { nftArteData } = useArteNft();
   const { accountData } = useCurrentAccount();
 
-  const filteredNFTs = nftArteData?.filter((nft) => accountData.positions.some((position) => position.tokenId === nft.tokenId && position.pool.id === filteredData?.id));
+  const filteredNFTs = Array.isArray(nftArteData) && nftArteData.length > 0
+    ? nftArteData.filter((nft) => 
+        accountData.positions.some((position) => 
+          position.tokenId === nft.tokenId && 
+          position.pool.id === filteredData?.id
+        )
+      )
+    : [];
 
   const reserveSize = calculateReserveSize(filteredData?.totalSupplyAssets);
   const availableLiquidity = calculateAvailableLiquidity(
@@ -121,7 +128,7 @@ export default function TopPoolData({
             <CardContent className="p-5 space-y-5">
               <Label className="text-lg">Your Position</Label>
               <Separator className="w-full" />
-              {filteredNFTs.length > 0 ? (
+              {filteredNFTs && filteredNFTs.length > 0 ? (
                 <ScrollArea>
                   <div className="flex flex-col w-full gap-2 h-auto max-h-48 overflow-auto">
                     {filteredNFTs.map((nft, index) => {

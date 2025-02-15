@@ -116,8 +116,6 @@ const CreateCuratorComponent = () => {
     const handleCreateCuratorSubmit = (data: FieldValues) => {
         const normalizeAllocations = data.allocations.map((a: string) => denormalize(a, 16).toString());
 
-        console.log("data = ", data);
-
         mutation.mutate(
             {
                 _name: data._name,

@@ -267,83 +267,64 @@ const OpenSeaMetadataSchema = z.object({
     lastIngestedAt: z.string(),
 });
 
-const ImageSchema = z.object({
-    cachedUrl: z.string(),
-    thumbnailUrl: z.string(),
-    pngUrl: z.string(),
-    contentType: z.string(),
-    size: z.number(),
-    originalUrl: z.string(),
-});
-
-const RawMetadataSchema = z.object({
-    tokenUri: z.string(),
-    metadata: z.object({
-        image: z.string(),
-        external_url: z.string(),
-        is_normalized: z.boolean(),
-        image_url: z.string(),
-        name: z.string(),
-        description: z.string(),
-        attributes: z.array(
-            z.object({
-                value: z.union([z.string(), z.boolean(), z.number()]),
-                trait_type: z.string(),
-                display_type: z.optional(z.string()),
-            })
-        ),
-        version: z.number(),
-        url: z.string(),
-    }),
-    error: z.null(),
-});
-
-const CollectionSchema = z.object({
-    name: z.string(),
-    slug: z.string(),
-    externalUrl: z.null(),
-    bannerImageUrl: z.null(),
-});
-
-const MintSchema = z.object({
-    mintAddress: z.null(),
-    blockNumber: z.null(),
-    timestamp: z.null(),
-    transactionHash: z.null(),
-});
-
-const ContractSchema = z.object({
-    address: z.string(),
-    name: z.string(),
-    symbol: z.string(),
-    totalSupply: z.null(),
-    tokenType: z.string(),
-    contractDeployer: z.string(),
-    deployedBlockNumber: z.number(),
-    openSeaMetadata: OpenSeaMetadataSchema,
-    isSpam: z.null(),
-    spamClassifications: z.array(z.string()),
-});
-
 export const alchemyNftSchema = z.object({
-    contract: ContractSchema,
+    contract: z.object({
+        address: z.string(),
+        name: z.string().nullable(),
+        symbol: z.string().nullable(),
+        totalSupply: z.any().nullable(),
+        tokenType: z.string(),
+        contractDeployer: z.string(),
+        deployedBlockNumber: z.any().nullable(),
+        openSeaMetadata: z.object({
+            floorPrice: z.any().nullable(),
+            collectionName: z.string().nullable(),
+            collectionSlug: z.string().nullable(),
+            safelistRequestStatus: z.string().nullable(),
+            imageUrl: z.string().nullable(),
+            description: z.string().nullable(),
+            externalUrl: z.string().nullable(),
+            twitterUsername: z.string().nullable(),
+            discordUrl: z.string().nullable(),
+            bannerImageUrl: z.string().nullable(),
+            lastIngestedAt: z.string().nullable(),
+        }),
+        isSpam: z.boolean().nullable(),
+        spamClassifications: z.array(z.string()),
+    }),
     tokenId: z.string(),
     tokenType: z.string(),
-    name: z.string(),
-    description: z.string(),
-    tokenUri: z.string(),
-    image: ImageSchema,
-    raw: RawMetadataSchema,
-    collection: CollectionSchema,
-    mint: MintSchema,
-    owners: z.null(),
-    timeLastUpdated: z.string(),
+    name: z.string().nullable(),
+    description: z.string().nullable(),
+    tokenUri: z.string().nullable(),
+    image: z.object({
+        cachedUrl: z.string().nullable(),
+        thumbnailUrl: z.string().nullable(),
+        pngUrl: z.string().nullable(),
+        contentType: z.string().nullable(),
+        size: z.any().nullable(),
+        originalUrl: z.string().nullable(),
+    }),
+    raw: z.object({
+        tokenUri: z.string().nullable(),
+        metadata: z.record(z.any()),
+        error: z.any().nullable(),
+    }),
+    collection: z.any().nullable(),
+    mint: z.object({
+        mintAddress: z.string(),
+        blockNumber: z.string(),
+        timestamp: z.string(),
+        transactionHash: z.string().nullable(),
+    }),
+    owners: z.any().nullable(),
+    timeLastUpdated: z.string().nullable(),
     balance: z.string(),
     acquiredAt: z.object({
-        blockTimestamp: z.null(),
-        blockNumber: z.null(),
+        blockTimestamp: z.string().nullable(),
+        blockNumber: z.string().nullable(),
     }),
-});
+})
 
 // CoinMarketCap schema
 const ContractAddressMarketCap = z.object({
@@ -482,7 +463,7 @@ export const auctionApiSchema = z.object({
     nftSymbol: z.string().optional().nullable(),
     nftImageUrl: z.string().optional().nullable(),
     poolId: z.string().optional().nullable(),
-    tokenId: z.string(), 
+    tokenId: z.string(),
     isLiquidatableStatus: z.boolean(),
     positionAccount: z.string(),
     loanAddress: z.string(),

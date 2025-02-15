@@ -31,8 +31,6 @@ export default function DashboardPage() {
     const { accountLendData, accountLendLoading, accountLendRefetching } = useAccountLend()
     const { accountData, accountLoading } = useCurrentAccount()
 
-    console.log("account data = ", accountData)
-
     const filteredEarnData = earnData.filter((data) => accountData.earn.map((earn) => earn.id).includes(data.id))
 
     if (!hasMounted) {

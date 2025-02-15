@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { NftImage } from "@/components/nft/NftImage";
 import SkeletonWrapper from "@/components/loader/SkeletonWrapper";
 import { toast } from "sonner";
+import { useMintNFT } from "@/hooks/contract/write/useMintNFT";
 
 interface SupplyCollateralProps {
     nftData?: AlchemyNftSchema[];
@@ -29,6 +30,7 @@ export default function SupplyCollateral({ nftData, filteredData, nftLoading }: 
     const { address } = useAccount();
 
     const [showSuccessDialog, setShowSuccessDialog] = useState(false);
+    const [showSuccessDialog2, setShowSuccessDialog2] = useState(false);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedNft, setSelectedNft] = useState<AlchemyNftSchema | null>(null);
 
@@ -74,6 +76,26 @@ export default function SupplyCollateral({ nftData, filteredData, nftLoading }: 
         );
     };
 
+    const { mutation: mintMutation, txHash: mintTxHash } = useMintNFT();
+
+    const handleMintNft = async () => {
+        mintMutation.mutate(
+            {
+                id: ""
+            },
+            {
+                onSuccess: () => {
+                    setShowSuccessDialog2(true);
+                    form.reset();
+                },
+                onError: (error) => {
+                    toast.error(`Error borrowing: ${error}`);
+                    console.error("Error borrowing:", error);
+                },
+            }
+        );
+    };
+
     const handleSelectNft = (nft: AlchemyNftSchema) => {
         setSelectedNft(nft);
         setIsDialogOpen(false);
@@ -98,6 +120,12 @@ export default function SupplyCollateral({ nftData, filteredData, nftLoading }: 
                 onClose={() => setShowSuccessDialog(false)}
                 txHash={txHash as HexAddress || ""}
                 processName="Supply Collateral"
+            />
+            <SuccessDialog
+                isOpen={showSuccessDialog2}
+                onClose={() => setShowSuccessDialog2(false)}
+                txHash={mintTxHash as HexAddress || ""}
+                processName="Minting NFT"
             />
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-5">
@@ -132,9 +160,12 @@ export default function SupplyCollateral({ nftData, filteredData, nftLoading }: 
                                                                 variant={"outline"}
                                                                 className="w-full h-auto flex justify-start items-center gap-4 py-4"
                                                             >
-                                                                <NftImage path={selectedNft?.contract.openSeaMetadata.imageUrl || ""} />
+                                                                <NftImage path={selectedNft?.contract?.openSeaMetadata?.imageUrl &&
+                                                                    selectedNft.contract.openSeaMetadata.imageUrl !== "null"
+                                                                    ? selectedNft.contract.openSeaMetadata.imageUrl
+                                                                    : ""} />
                                                                 <div className="flex flex-col items-start justify-center gap-1">
-                                                                    <Label className="cursor-pointer">{selectedNft?.contract.symbol}</Label>
+                                                                    <Label className="cursor-pointer">{selectedNft?.contract?.symbol}</Label>
                                                                     <Label className="cursor-pointer text-gray-500 text-xs">Token id: {selectedNft?.tokenId}</Label>
                                                                 </div>
                                                             </Button>
@@ -147,13 +178,21 @@ export default function SupplyCollateral({ nftData, filteredData, nftLoading }: 
                                     </FormItem>
                                 )}
                             />
-
                             <Button
                                 type="submit"
                                 className="w-full"
                                 disabled={mutation.isPending}
                             >
                                 Add Collateral
+                            </Button>
+                            <Label className="text-xs text-gray-500 mt-2">Don't have any NFT? Mint one in below</Label>
+
+                            <Button
+                                onClick={handleMintNft}
+                                className="w-full"
+                                disabled={mintMutation.isPending}
+                            >
+                                Mint NFT
                             </Button>
                         </CardContent>
                     </Card>
