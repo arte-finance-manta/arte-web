@@ -257,3 +257,14 @@ export const queryBids = gql`{
         blockTimestamp
     }
 }`
+
+export const querySupply = gql`{
+    supplies(orderBy: blockTimestamp, orderDirection: desc) {
+        id
+        poolId
+        tokenId
+        sender
+        onBehalfOf
+        amount
+    }
+}`

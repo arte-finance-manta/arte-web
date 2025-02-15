@@ -5,6 +5,7 @@ export const ADDRESS_MOCK_USDC = "0x2e3925737387C42Cf1b5156bC3985a0E45d6505C"
 export const ADDRESS_MOCK_USDT = "0xe31fab9771090e03c00d09D6AbDeD28f7ba70f90"
 
 export const API_SUBGRAPH = "https://api.goldsky.com/api/public/project_cm2ybarz9bslu01zjgwj1hnty/subgraphs/arte-subgraph/1.0.0/gn"
+export const API_SUBGRAPH_ASSET = "https://api.goldsky.com/api/public/project_cm760vek2b6z101qz3xn2bm8f/subgraphs/arte-asset/1.0.0/gn"
 
 export const API_CRYPTOTOKEN = "https://gist.githubusercontent.com/FjrREPO/767cc50342ef8d9737755ae24ff73b47/raw/8b08a7edbd08ebf991cd44e02c5c4d285885a727/arte-manta-token.json"
 
