@@ -17,10 +17,10 @@ export const Footer = () => {
             <div className="relative flex justify-between items-center py-5 w-full h-auto z-40 gap-5 xl:max-w-screen-xl lg:max-w-screen-lg mx-auto">
                 <div className="flex flex-row gap-10">
                     <div className="flex flex-row space-x-2 items-center">
-                        <Image src={"https://res.cloudinary.com/dutlw7bko/image/upload/v1731828498/Artha/story-protocol-logo_bknevb.jpg"} width={50} height={50} alt="audits" className="rounded-full" />
+                        <Image src={"/manta.png"} width={50} height={50} alt="audits" className="rounded-full" />
                         <div className="flex flex-col">
                             <Label className="font-bold text-sm sm:text-md">Build On</Label>
-                            <Label className="text-xs sm:text-sm">Story Protocol</Label>
+                            <Label className="text-xs sm:text-sm">Manta Network</Label>
                         </div>
                     </div>
                 </div>

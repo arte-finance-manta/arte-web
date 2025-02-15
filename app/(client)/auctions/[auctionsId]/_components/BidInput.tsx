@@ -42,7 +42,7 @@ export const BidInput = ({
         }
 
         if (numericBid < minBid) {
-            setBidError(`Bid must be at least ${minBid.toFixed(2)} USDC`);
+            setBidError(`Bid must be at least ${minBid.toFixed(2)} MANTA`);
             return false;
         }
 

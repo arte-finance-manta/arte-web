@@ -119,7 +119,7 @@ export default function AuctionDetailComponent({
         }
 
         if (numericValue < minBid) {
-            setBidError(`Bid must be at least ${minBid.toFixed(2)} USDC`);
+            setBidError(`Bid must be at least ${minBid.toFixed(2)} MANTA`);
         } else if (numericValue > maxBalance) {
             setBidError("Insufficient balance");
         } else {
@@ -153,7 +153,7 @@ export default function AuctionDetailComponent({
         }
 
         if (numericBid < minBid) {
-            setBidError(`Bid must be at least ${minBid.toFixed(2)} USDC`);
+            setBidError(`Bid must be at least ${minBid.toFixed(2)} MANTA`);
             return;
         }
 
@@ -282,7 +282,7 @@ export default function AuctionDetailComponent({
                                                             </TooltipTrigger>
                                                             <TooltipContent>
                                                                 {findHighestBid?.amount
-                                                                    ? `Highest bid now is ${findHighestBid?.amount} USDC`
+                                                                    ? `Highest bid now is ${findHighestBid?.amount} MANTA`
                                                                     : "No bids placed yet"}
                                                             </TooltipContent>
                                                         </Tooltip>

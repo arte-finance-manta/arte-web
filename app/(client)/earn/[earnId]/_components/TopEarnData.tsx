@@ -56,8 +56,8 @@ export default function TopEarnData({ filteredData, isLoading }: Props) {
                   {
                     label: "Lend Asset", value: (
                       <div className="flex flex-row gap-2 items-center justify-center">
-                        <CoinImage symbol={"USDC"} />
-                        <Label className="text-lg font-medium">{"USDC"}</Label>
+                        <CoinImage symbol={"MANTA"} />
+                        <Label className="text-lg font-medium">{"MANTA"}</Label>
                       </div>
                     )
                   },

@@ -27,7 +27,7 @@ const SelectCoinImage: React.FC<SelectCoinImageProps> = ({
     const loadingPlaceholders = Array(3).fill(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    const excludedSymbols = ["USDC", "BAYC", "AZUKI", "USDT"];
+    const excludedSymbols = ["MANTA", "BAYC", "AZUKI", "USDT"];
 
     const mainDisplayCoins = data?.filter(coin =>
         excludedSymbols.includes(coin.symbol.toUpperCase())

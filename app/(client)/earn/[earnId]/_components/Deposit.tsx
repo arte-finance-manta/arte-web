@@ -190,7 +190,7 @@ export default function Deposit({ filteredData }: DepositProps) {
                   })}
                 />
                 <div className="absolute right-3 top-1/2 transform -translate-y-1/2 w-fit">
-                  <CoinImage symbol={"USDC"} />
+                  <CoinImage symbol={"MANTA"} />
                 </div>
               </div>
               {errors.amount && (
