@@ -69,6 +69,8 @@ export const DepositAndBorrowSection = ({
     form.watch("tokenId")
   );
 
+  const filterNFTIP = nftData ? nftData?.filter((nft) => nft.contract.address.toLowerCase() === collateralTokenSelected?.toLowerCase()) : []
+
   const maxBorrow = normalizeBN(Number(priceOracle), 6)
     .multipliedBy(Number(selectedPool?.ltv || "0"))
     .dividedBy(100);
@@ -148,7 +150,7 @@ export const DepositAndBorrowSection = ({
     filteredPools.length,
   ]);
 
-  const uniqueNftData = Array.isArray(nftData) ? nftData.filter(
+  const uniqueNftData = Array.isArray(filterNFTIP) ? filterNFTIP.filter(
     (token, index, self) =>
       self.findIndex((t) => t.tokenId === token.tokenId) === index
   ) : [];
@@ -269,7 +271,7 @@ export const DepositAndBorrowSection = ({
                             <div className="relative">
                               <Input
                                 {...field}
-                                className="w-full pl-[135px] py-8 rounded-2xl"
+                                className="w-full pl-[145px] py-8 rounded-2xl"
                                 type="number"
                                 min={0}
                                 placeholder="Enter borrow amount"
@@ -281,7 +283,7 @@ export const DepositAndBorrowSection = ({
                                   value={selectedTokenAddress}
                                   disabled={!tokenIdSelected}
                                 >
-                                  <SelectTrigger className="w-28 py-6 rounded-2xl">
+                                  <SelectTrigger className="w-32 py-6 rounded-2xl">
                                     <SelectValue placeholder="Select token">
                                       {selectedTokenAddress && (
                                         <div className="flex items-center gap-2">

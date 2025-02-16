@@ -36,8 +36,8 @@ export const GET = async () => {
             return {
               contract: {
                 address: ipAddress,
-                name: "IP Contract",
-                symbol: "IPC",
+                name: `IP ${tokenId}`,
+                symbol: `IP${tokenId}`,
                 totalSupply: null,
                 tokenType: "ERC721",
                 contractDeployer: "0xc876f3c2b40d89F6920A70394D02AacfDc50ed45",
