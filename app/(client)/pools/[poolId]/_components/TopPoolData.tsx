@@ -31,7 +31,9 @@ export default function TopPoolData({
   const { address } = useAccount();
   const { nftArteData } = useArteNft();
   const { accountData } = useCurrentAccount();
-  const filterNFTIP = nftArteData ? nftArteData?.filter((nft) => nft.contract.address.toLowerCase() === filteredData?.collateralAddress?.toLowerCase() && nft.mint.mintAddress.toLowerCase() === address?.toLowerCase()) : []
+  const filterNFTIP = nftArteData ? nftArteData?.filter((nft) => nft.contract.address.toLowerCase() === filteredData?.collateralAddress?.toLowerCase()) : []
+
+  console.log("filterNFTIP", filterNFTIP);
 
   const filteredNFTs = Array.isArray(filterNFTIP) && filterNFTIP.length > 0
     ? filterNFTIP.filter((nft) => 
