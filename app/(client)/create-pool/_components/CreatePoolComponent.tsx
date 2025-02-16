@@ -187,7 +187,7 @@ const CreatePoolComponent = () => {
                         txHash={txHash as HexAddress || ""}
                         processName="Create Pool"
                     />
-                    <Card className="w-full max-w-xl mx-auto bg-white/5 backdrop-blur-lg border-none shadow-2xl">
+                    <Card className="w-full max-w-xl mx-auto bg-white dark:bg-white/5 backdrop-blur-lg border-none shadow-2xl">
                         <CardHeader className="flex flex-col gap-3">
                             <div className="flex flex-col gap-1">
                                 <CardTitle>Create Pool</CardTitle>

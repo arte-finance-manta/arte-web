@@ -27,7 +27,7 @@ const SelectCoinImage: React.FC<SelectCoinImageProps> = ({
     const loadingPlaceholders = Array(3).fill(null);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    const excludedSymbols = ["MANTA", "BAYC", "AZUKI", "USDT"];
+    const excludedSymbols = ["MANTA", "DAI" , "AZUKI", "USDT"];
 
     const mainDisplayCoins = data?.filter(coin =>
         excludedSymbols.includes(coin.symbol.toUpperCase())
@@ -149,7 +149,7 @@ const SelectCoinImage: React.FC<SelectCoinImageProps> = ({
                                                     <CoinImageCustom symbol={token?.symbol || ""} className="w-9 h-9"/>
                                                     <div className="flex flex-col items-start justify-center gap-3">
                                                         <Label className="cursor-pointer">{token?.symbol}</Label>
-                                                        <Label className="cursor-pointer text-gray-500">{token?.name} ({token?.contract_address[0].platform.name})</Label>
+                                                        <Label className="cursor-pointer text-gray-500">{token?.name} (Manta)</Label>
                                                     </div>
                                                 </div>
                                             </Button>

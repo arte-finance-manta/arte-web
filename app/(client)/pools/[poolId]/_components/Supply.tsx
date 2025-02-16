@@ -18,7 +18,7 @@ import { useAccount } from "wagmi";
 import { useSupply } from "@/hooks/contract/write/useSupply";
 import { toast } from "sonner";
 import { useERC20Balance } from "@/hooks/contract/useERC20Balance";
-import { normalize } from "@/lib/helper/bignumber";
+import { denormalize, normalize } from "@/lib/helper/bignumber";
 import { useMintERC20 } from "@/hooks/contract/write/useMintERC20";
 
 interface SupplyProps {
@@ -76,7 +76,7 @@ export default function Supply({
     mutation.mutate(
       {
         id: filteredData?.id as string,
-        amount: (Number(data.supplyAmount) * 1e6).toString(),
+        amount: (denormalize(Number(data.supplyAmount), 6)).toString(),
         onBehalfOf: address as HexAddress
       },
       {

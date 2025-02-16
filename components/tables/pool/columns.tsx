@@ -67,7 +67,7 @@ export function columns(): ColumnDef<PoolSchema>[] {
         const lendAPR = calculateLendAPR(row.original.borrowRate, row.original.totalBorrowAssets, row.original.totalSupplyAssets);
         return (
           <div className="flex items-center gap-2">
-            <span>{lendAPR.toFixed(3)}%</span>
+            <span>{lendAPR.toFixed(3) || 0}%</span>
           </div>
         )
       }
@@ -102,7 +102,7 @@ export function columns(): ColumnDef<PoolSchema>[] {
         const utilizationRate = calculateUtilizationRate(row.original.totalBorrowAssets, row.original.totalSupplyAssets)
         return (
           <div className="flex items-center gap-2 justify-end">
-            <span>{utilizationRate}%</span>
+            <span>{utilizationRate || 0}%</span>
           </div>
         )
       }

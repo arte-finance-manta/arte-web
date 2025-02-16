@@ -12,7 +12,7 @@ export default function CardRewards() {
                 <div className="flex flex-row justify-between items-center">
                     <div className="flex flex-col gap-2">
                         <Label className="text-sm text-textSecondary font-normal">Estimated Rewards</Label>
-                        <Label className="text-xl">$0.00</Label>
+                        <Label className="text-xl">Soon</Label>
                     </div>
                 </div>
             </CardContent>
