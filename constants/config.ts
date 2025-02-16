@@ -1,28 +1,29 @@
-export const ADDRESS_ARTE = "0x34d438480F557592AB8aCf192D16C4C871401438"
-export const ADDRESS_CURATOR = "0x5db691Fe9aC83820aC14d48D64d1834Ec7Bf3A74"
+export const ADDRESS_ARTE = "0x3C738eA196A7FF1F25582ab96E2EAbB369A466FE"
+export const ADDRESS_CURATOR = "0xfcD1977456E74e4E0DC35294ce2Cb1AC29cC1803"
 
-export const ADDRESS_MOCK_USDC = "0x2e3925737387C42Cf1b5156bC3985a0E45d6505C"
-export const ADDRESS_MOCK_USDT = "0xe31fab9771090e03c00d09D6AbDeD28f7ba70f90"
+export const ADDRESS_MOCK_MANTA = "0xeFd932eF6581A4c39dB626395701f4A723d435d3"
+export const ADDRESS_MOCK_USDT = "0x97E9B1A56B48D8D1bDBCc43d808f349383Ce6f68"
 
-export const API_SUBGRAPH = "https://api.goldsky.com/api/public/project_cm2ybarz9bslu01zjgwj1hnty/subgraphs/arte-subgraph/1.0.0/gn"
-export const API_SUBGRAPH_ASSET = "https://api.goldsky.com/api/public/project_cm760vek2b6z101qz3xn2bm8f/subgraphs/arte-asset/1.0.0/gn"
+export const API_SUBGRAPH = "https://api.goldsky.com/api/public/project_cm77lb2recutt01t59b3kgq3n/subgraphs/arte-subgraph/1.0.0/gn"
 
-export const API_CRYPTOTOKEN = "https://gist.githubusercontent.com/FjrREPO/767cc50342ef8d9737755ae24ff73b47/raw/8b08a7edbd08ebf991cd44e02c5c4d285885a727/arte-manta-token.json"
+export const API_CRYPTOTOKEN = "https://gist.githubusercontent.com/FjrREPO/767cc50342ef8d9737755ae24ff73b47/raw/f780d8720649ee28acb87b2413dd799f72098705/arte-manta-token.json"
 
-export const listLoanToken = ["MANTA", "USDT", "TUSD", "BUSD"]
+export const listLoanToken = ["MANTA", "USDT"]
 
 export const listIP = [
-    "0xc876f3c2b40d89F6920A70394D02AacfDc50ed45"
+    "0xD749527e38DD2AAa48193557C2203895e292CBe0",
+    "0x3Fd9d982857e74AD735A5512deb7ec3633E02199",
+    "0x11E9F96193199F5C28F3E04b741c7825e8E5C703"
 ]
 
 export const listIRM = [
-    "0x585A60b8C677bf5Caab80Fd467199a78b23Af078",
-    "0x6b4A346b9A71F54814067fbDef99B29F56b7bb89",
-    "0xBC0f3819727BAe75133AdB8FbbdC3cE1A5790b9e"
+    "0xC6D8B48B3eD1656928E439E9eebc1896e40Ca3A4",
+    "0x67CE0145D82Ae253F7db5767BF720f8Af2f42564",
+    "0x456485F1de4b8B7A0d87a15D48E9aA6498B57fd5"
 ]
 
 export const listOracle = [
-    "0xA0c45d36aFD17acEB04CEadF2D283157983ebb8c",
-    "0x22E8501FD38188EA8AE7EF4E1eE3cb802096c2f2",
-    "0x8bB18092a4F21b38593a7397F4Ca8eE2174F86d0"
+    "0x88e9F58931324442e368421bD2FeAdC6c32F78A0",
+    "0x1C2fDB53EaEc3030aD9de27B2906B15C23Ff9E70",
+    "0x9963acA83AcC2197217a910d166995076477E8Af"
 ]

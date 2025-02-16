@@ -3,7 +3,7 @@ import { createPublicClient, http } from 'viem';
 import { mantaSepoliaTestnet } from 'viem/chains';
 import { mockArthaAbi, mockArthaAddress, mockOracleAbi } from '@/lib/abi/auctionApiABI';
 import { AlchemyNftSchema, AuctionApiSchema, PositionSchema } from '@/types/auction.types';
-import { ADDRESS_ARTE, API_SUBGRAPH, listIP } from '@/constants/config';
+import { ADDRESS_ARTE, API_SUBGRAPH } from '@/constants/config';
 import { upsertLiquidations } from '@/services/liquidation-service';
 
 const client = createPublicClient({

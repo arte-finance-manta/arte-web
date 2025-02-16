@@ -81,7 +81,7 @@ export default function SupplyCollateral({ nftData, filteredData, nftLoading }: 
     const handleMintNft = async () => {
         mintMutation.mutate(
             {
-                id: ""
+                ipAddress: filteredData!.collateralAddress as HexAddress
             },
             {
                 onSuccess: () => {

@@ -25,9 +25,9 @@ export const useMintNFT = () => {
 
   const mutation = useMutation({
     mutationFn: async ({
-        id,
+      ipAddress,
     }: {
-        id: string;
+      ipAddress: string;
     }) => {
       try {
         // Reset steps
@@ -42,7 +42,7 @@ export const useMintNFT = () => {
 
         const result: any = await readContract(config, {
           abi: mockIPABI,
-          address: listIP[0] as HexAddress,
+          address: ipAddress as HexAddress,
           functionName: "listAllToken"
         });
 
@@ -57,7 +57,7 @@ export const useMintNFT = () => {
 
         const hash = await writeContract(config, {
           abi: mockIPABI,
-          address: listIP[0] as HexAddress,
+          address: ipAddress as HexAddress,
           functionName: "mint",
           args: [address, BigInt(newNumber)],
         });
