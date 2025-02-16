@@ -235,7 +235,7 @@ export const DepositAndBorrowSection = ({
                                       )}
                                     </ScrollArea>
                                   ) : (
-                                    <SelectItem value="0">
+                                    <SelectItem value="0" disabled>
                                       <div className="flex items-center gap-2">
                                         No NFTs found
                                       </div>

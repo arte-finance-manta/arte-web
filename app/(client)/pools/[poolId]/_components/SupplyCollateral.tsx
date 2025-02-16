@@ -185,7 +185,7 @@ export default function SupplyCollateral({ nftData, filteredData, nftLoading }: 
                             >
                                 Add Collateral
                             </Button>
-                            <Label className="text-xs text-gray-500 mt-2">Don't have any NFT? Mint one in below</Label>
+                            <Label className="text-xs text-gray-500 mt-2">Don't have any NFT? Mint one in below, for test only!</Label>
 
                             <Button
                                 onClick={handleMintNft}

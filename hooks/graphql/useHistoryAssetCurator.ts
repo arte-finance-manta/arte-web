@@ -1,4 +1,4 @@
-import { API_SUBGRAPH, API_SUBGRAPH_ASSET } from "@/constants/config";
+import { API_SUBGRAPH } from "@/constants/config";
 import { queryPool } from "@/graphql/query";
 import { PoolSchema } from "@/lib/validation/types";
 import { useQuery } from "@tanstack/react-query";
@@ -17,7 +17,7 @@ export default function usePools() {
   } = useQuery<QueryData>({
     queryKey: ["curator-asset"],
     queryFn: async () => {
-      return await request(API_SUBGRAPH_ASSET, queryPool);
+      return await request(API_SUBGRAPH, queryPool);
     },
     refetchInterval: 600000000,
   });

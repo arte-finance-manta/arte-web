@@ -207,7 +207,7 @@ export default function Supply({
                 Supply
               </Button>
 
-              <p className="mt-1">mint token below, this purpose for test only!</p>
+              <p className="text-xs text-gray-500 mt-2">mint token below, this purpose for test only!</p>
               <Button
                 onClick={handleMint}
                 disabled={mutation.isPending}
