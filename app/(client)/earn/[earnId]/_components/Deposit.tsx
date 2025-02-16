@@ -22,6 +22,7 @@ import { toast } from "sonner"
 import { normalize, normalizeBN } from "@/lib/helper/bignumber"
 import BigNumber from "bignumber.js"
 import { useDecimal } from "@/hooks/contract/useDecimal"
+import { useMintERC20 } from "@/hooks/contract/write/useMintERC20";
 
 const depositFormSchema = z.object({
   amount: z.string()
@@ -48,6 +49,7 @@ interface DepositProps {
 
 export default function Deposit({ filteredData }: DepositProps) {
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
+  const [showSuccessDialog2, setShowSuccessDialog2] = useState(false)
   const { address } = useAccount()
 
   const { assetCurator } = useAssetCurator(filteredData?.curator as HexAddress)
@@ -143,6 +145,22 @@ export default function Deposit({ filteredData }: DepositProps) {
     )
   }
 
+  const { mutation: mMint, txHash: mTxHash } = useMintERC20();
+
+  const handleMint = async () => {
+    try {
+      await mMint.mutateAsync({ tokenAddress: filteredData!.asset as HexAddress },
+        {
+          onSuccess: () => {
+            setShowSuccessDialog2(true);
+          }
+        }
+      );
+    } catch (error) {
+      console.error("Mint error:", error);
+    }
+  };
+
   const formattedBalance = balance
     ? Number(normalize(balance.toString(), decimal ?? 0)).toFixed(2)
     : "0.00"
@@ -150,11 +168,18 @@ export default function Deposit({ filteredData }: DepositProps) {
   return (
     <>
       {mutation.isPending && <LoadingTransaction message={"Loading.."} />}
+      {mMint.isPending && <LoadingTransaction message={"Loading.."} />}
       <SuccessDialog
         isOpen={showSuccessDialog}
         onClose={() => setShowSuccessDialog(false)}
         txHash={txHash as `0x${string}` || ""}
         processName="Deposit"
+      />
+      <SuccessDialog
+        isOpen={showSuccessDialog2}
+        onClose={() => setShowSuccessDialog2(false)}
+        txHash={mTxHash as `0x${string}` || ""}
+        processName="Mint"
       />
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
         <Card className="w-full p-5">
@@ -213,6 +238,15 @@ export default function Deposit({ filteredData }: DepositProps) {
           }
         >
           Deposit
+        </Button>
+
+        <p className="mt-1">mint token below, this purpose for test only!</p>
+        <Button
+          onClick={handleMint}
+          disabled={mutation.isPending}
+          className="w-full"
+        >
+          {mutation.isPending ? "Minting..." : "Mint"}
         </Button>
         <Card className="w-full">
           <CardContent className="p-5 space-y-5">
