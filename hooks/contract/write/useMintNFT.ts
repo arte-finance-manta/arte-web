@@ -78,7 +78,8 @@ export const useMintNFT = () => {
           setSteps((prev) =>
             prev.map((item) => (item.step === 2 ? { ...item, status: "success" } : item))
           );
-          toast.success("Withdraw successfully!");
+          toast.success("Mint successfully!");
+          window.location.reload();
           return receipt;
         } else {
           throw new Error("Transaction confirmation failed.");
