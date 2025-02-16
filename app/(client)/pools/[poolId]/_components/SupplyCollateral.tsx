@@ -64,6 +64,7 @@ export default function SupplyCollateral({ nftData, filteredData, nftLoading }: 
         id: filteredData?.id,
         tokenId: data.tokenId,
         onBehalfOf: address,
+        tokenAddress: filteredData?.collateralAddress as HexAddress
       },
       {
         onSuccess: () => {

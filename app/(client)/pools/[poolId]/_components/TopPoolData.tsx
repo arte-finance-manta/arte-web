@@ -17,6 +17,7 @@ import { motion } from "framer-motion";
 import { calculateReserveSize, calculateAvailableLiquidity, calculateBorrowAPR, calculateLendAPR, calculateUtilizationRate } from "@/lib/helper/helper";
 import { useArteNft } from "@/hooks/useArteNft";
 import useCurrentAccount from "@/hooks/graphql/useCurrentAccount";
+import { useAccount } from "wagmi";
 
 interface Props {
   filteredData?: PoolSchema;
@@ -27,11 +28,13 @@ export default function TopPoolData({
   filteredData,
   isLoading
 }: Props) {
+  const { address } = useAccount();
   const { nftArteData } = useArteNft();
   const { accountData } = useCurrentAccount();
+  const filterNFTIP = nftArteData ? nftArteData?.filter((nft) => nft.contract.address.toLowerCase() === filteredData?.collateralAddress?.toLowerCase() && nft.mint.mintAddress.toLowerCase() === address?.toLowerCase()) : []
 
-  const filteredNFTs = Array.isArray(nftArteData) && nftArteData.length > 0
-    ? nftArteData.filter((nft) => 
+  const filteredNFTs = Array.isArray(filterNFTIP) && filterNFTIP.length > 0
+    ? filterNFTIP.filter((nft) => 
         accountData.positions.some((position) => 
           position.tokenId === nft.tokenId && 
           position.pool.id === filteredData?.id

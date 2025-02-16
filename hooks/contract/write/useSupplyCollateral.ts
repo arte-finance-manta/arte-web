@@ -26,10 +26,12 @@ export const useSupplyCollateral = () => {
             id,
             tokenId,
             onBehalfOf,
+            tokenAddress,
         }: {
             id: string;
             tokenId: string;
             onBehalfOf: string;
+            tokenAddress: string;
         }) => {
             try {
                 // Reset steps
@@ -45,9 +47,9 @@ export const useSupplyCollateral = () => {
 
                 const approve = await writeContract(config, {
                     abi: mockIPABI,
-                    address: listIP[0] as HexAddress,
-                    functionName: "approve",
-                    args: [ADDRESS_ARTE, BigInt(tokenId)],
+                    address: tokenAddress as HexAddress,
+                    functionName: "setApprovalForAll",
+                    args: [ADDRESS_ARTE, true],
                 });
 
                 const receiptApprove = await waitForTransactionReceipt(config, { hash: approve });
